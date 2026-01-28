@@ -39,7 +39,7 @@ export function ControlPanel() {
         setExternalScores(null);
         const form = new FormData();
         form.append("audio", fileForBackend);
-        const res = await fetch("http://localhost:4003/analyze", {
+        const res = await fetch("/analyze", {
           method: "POST",
           body: form,
         });

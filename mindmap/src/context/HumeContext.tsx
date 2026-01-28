@@ -6,7 +6,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { HUME_API_KEY, assertHumeKeyPresent } from "../config/hume";
 import type { HumeProsodyScores } from "../types/hume";
 import type { AudioChunk } from "../types/audio";
 
@@ -43,34 +42,11 @@ export function HumeProvider({ children }: HumeProviderProps) {
   const [isExternalLoading, setIsExternalLoading] = useState(false);
 
   const connect = useCallback(async () => {
-    try {
-      assertHumeKeyPresent();
-    } catch (err) {
-      setStatus("error");
-      setLastError(err instanceof Error ? err.message : "Missing Hume API key");
-      return;
-    }
-
-    if (status === "connected" || status === "connecting") return;
-
-    setStatus("connecting");
+    if (status === "connected") return;
+    // For this architecture, the real Hume connection happens on the backend.
+    // The frontend "status" is just a UI flag indicating that analysis has started.
+    setStatus("connected");
     setLastError(null);
-
-    try {
-      // Placeholder for future real Hume streaming integration.
-      // For the current client-only MVP, we simply mark the connection
-      // as established so the rest of the UI can function with local metrics.
-      if (!HUME_API_KEY || HUME_API_KEY === "HUME_API_KEY_PLACEHOLDER") {
-        throw new Error("Hume API key missing. Set VITE_HUME_API_KEY in your .env file.");
-      }
-      setStatus("connected");
-      setLastError(null);
-      setLastScores(null);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to connect to Hume";
-      setLastError(message);
-      setStatus("error");
-    }
   }, [status]);
 
   const disconnect = useCallback(() => {

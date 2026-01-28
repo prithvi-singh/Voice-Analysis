@@ -4,18 +4,22 @@ import multer from "multer";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
 import FormData from "form-data";
+import path from "path";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["POST", "GET", "OPTIONS"],
-  }),
-);
+// CORS is only needed for local dev when the frontend runs on a different origin.
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      methods: ["POST", "GET", "OPTIONS"],
+    }),
+  );
+}
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -175,6 +179,17 @@ app.post("/analyze", upload.single("audio"), async (req, res) => {
     console.error(err);
     return res.status(500).json({ error: "Failed to analyze audio." });
   }
+});
+
+// Serve built React app (mindmap/dist) when deployed together.
+// After building the frontend with `npm run build` in `mindmap/`,
+// the static files will live at ../../mindmap/dist relative to this file's dist output.
+const publicDir = path.resolve(__dirname, "../../mindmap/dist");
+app.use(express.static(publicDir));
+
+// Fallback to index.html for any non-API route (single-page app).
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(publicDir, "index.html"));
 });
 
 app.listen(port, () => {
