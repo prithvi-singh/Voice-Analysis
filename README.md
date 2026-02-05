@@ -15,27 +15,28 @@
 
 ---
 
-MindMap is a stunning voice analysis dashboard that combines **local acoustic features** with **Hume AI Expression Measurement** to surface emotion and mental-health–relevant biomarkers from recorded speech.
+MindMap is a voice analysis dashboard that combines **local acoustic features** with **Hume AI Expression Measurement** to surface emotion and mental-health–relevant biomarkers from recorded speech.
 
 ## ✨ Features
 
 ### Core Analysis
-- 🎤 **Voice Upload & Analysis** – Drag-and-drop audio files
-- 🧠 **AI Emotion Detection** – 48+ emotions via Hume AI
+- 🎤 **Voice Upload & Analysis** – Drag-and-drop audio files (MP3, WAV, M4A)
+- 🧠 **AI Emotion Detection** – 48+ emotions via Hume AI with normalized percentages
 - 📊 **Clinical Proxy Metrics** – Depression, anxiety, mania, energy indicators
-- 🎵 **Voice Quality Metrics** – Pitch, volume, jitter, stability
+- 🎵 **Voice Quality Metrics** – Pitch, volume, jitter, stability analysis
 
-### Beautiful Visualizations
-- 🌊 **Real-time Audio Visualizer** – Animated frequency bars
-- 🎭 **Emotion Spectrum** – Top 16 emotions with color-coded progress
-- 📈 **MindMap Trajectory** – Energy vs Valence scatter plot
-- 🔊 **Voice Feed** – Waveform display with live metrics
+### Intuitive Visualizations
+- 🌊 **Real-time Audio Visualizer** – Animated frequency bars synced to playback
+- 🎯 **Mood Meter** – Overall sentiment from negative to positive
+- 🥧 **Emotion Pie Chart** – Normalized distribution (adds up to 100%)
+- 📊 **Emotion Bars** – Top emotions with intensity labels (Strong/Moderate/Mild)
+- 🔊 **Voice Feed** – Waveform display with real-time voice metrics
 
 ### Modern Design
 - 🌙 Dark glassmorphism UI with gradient accents
 - ✨ Smooth animations and micro-interactions
 - 📱 Fully responsive layout
-- ♿ Accessibility-friendly focus states
+- 🎨 Color-coded emotions for quick interpretation
 
 > ⚠️ **Disclaimer**: This is a technical prototype, **not** a medical device. The clinical proxies are experimental and should **not** be used for diagnosis or clinical decision-making.
 
@@ -45,24 +46,26 @@ MindMap is a stunning voice analysis dashboard that combines **local acoustic fe
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  🧠 MindMap Voice Analysis                                      │
+│  🧠 MindMap Voice Analysis                    [Powered by Hume] │
 ├─────────────────────────────────────────────────────────────────┤
-│  ░░░░░▓▓▓▓▓███████▓▓▓▓░░░░░  (Audio Visualizer)                │
+│  ░░▓▓▓███████████████████████▓▓▓░░  (Audio Visualizer)         │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────────────────────────────────┐  │
-│  │ Control     │  │ Emotion Spectrum                        │  │
+│  │ Control     │  │ Emotional Analysis                      │  │
 │  │ Panel       │  │                                         │  │
-│  │             │  │ Joy ████████░░ 0.72                     │  │
-│  │ ▣ Upload    │  │ Interest █████░░░░ 0.48                 │  │
-│  │ ▷ Start     │  │ Excitement ████░░░░░ 0.41               │  │
-│  └─────────────┘  │ ...                                     │  │
+│  │             │  │ Overall Mood: [───────●────] Positive   │  │
+│  │ 🎵 audio.mp3│  │                                         │  │
+│  │ ▷ Analyze   │  │ 🥧 Pie Chart    Joy ████████ 28%       │  │
+│  │             │  │    [  28%  ]    Surprise ████ 18%       │  │
+│  │ ✓ Complete  │  │    [ Joy  ]    Interest ███ 15%        │  │
+│  └─────────────┘  │                 ...more                 │  │
 │  ┌─────────────┐  └─────────────────────────────────────────┘  │
-│  │ Clinical    │  ┌────────────────┐  ┌────────────────────┐  │
-│  │ Proxies     │  │ MindMap Plot   │  │ Voice Feed         │  │
-│  │             │  │                │  │                    │  │
-│  │ Energy 0.45 │  │    • •         │  │  ∿∿∿∿∿∿∿∿∿∿∿      │  │
-│  │ Anxiety 0.22│  │   •   •        │  │  Pitch: 180Hz     │  │
-│  └─────────────┘  └────────────────┘  └────────────────────┘  │
+│  │ Clinical    │  ┌─────────────────────────────────────────┐  │
+│  │ Proxies     │  │ Voice Feed                              │  │
+│  │             │  │                                         │  │
+│  │ Energy  45% │  │  ∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿               │  │
+│  │ Anxiety 22% │  │  Pitch: 180Hz │ Stability: 94%         │  │
+│  └─────────────┘  └─────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -82,8 +85,8 @@ MindMap is a stunning voice analysis dashboard that combines **local acoustic fe
 │  │        │             │                   │               │   │
 │  │  ┌─────▼─────────────▼───────────────────▼───────────┐  │   │
 │  │  │              UI Components                         │  │   │
-│  │  │  AudioVisualizer │ ControlPanel │ EmotionCloud    │  │   │
-│  │  │  LiveMetrics │ MindMapPlot │ VoiceFeed            │  │   │
+│  │  │  AudioVisualizer │ ControlPanel │ LiveMetrics     │  │   │
+│  │  │  EmotionalAnalysis │ VoiceFeed                    │  │   │
 │  │  └───────────────────────────────────────────────────┘  │   │
 │  └─────────────────────────────────────────────────────────┘   │
 └───────────────────────────┬─────────────────────────────────────┘
@@ -116,6 +119,9 @@ MindMap is a stunning voice analysis dashboard that combines **local acoustic fe
 ### 1. Clone & Install
 
 ```bash
+git clone https://github.com/prithvi-singh/Voice-Analysis.git
+cd Voice-Analysis
+
 # Install frontend
 cd mindmap
 npm install
@@ -127,8 +133,8 @@ npm install
 
 ### 2. Configure
 
-```bash
-# server/.env
+Create `server/.env`:
+```env
 HUME_API_KEY=your_hume_api_key_here
 PORT=4003
 ```
@@ -137,15 +143,17 @@ PORT=4003
 
 ```bash
 # Terminal 1 - Backend
-cd server && npm run dev
+cd server
+npm run dev
 
 # Terminal 2 - Frontend
-cd mindmap && npm run dev
+cd mindmap
+npm run dev
 ```
 
 ### 4. Open
 
-Visit `http://localhost:5173` and upload an audio file!
+Visit `http://localhost:5173` and upload an audio file with clear speech!
 
 ---
 
@@ -156,20 +164,19 @@ Visit `http://localhost:5173` and upload an audio file!
 ├── mindmap/                    # React frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── AudioVisualizer.tsx   # Animated frequency bars
-│   │   │   ├── ControlPanel.tsx      # Upload & playback controls
-│   │   │   ├── EmotionCloud.tsx      # Emotion spectrum display
-│   │   │   ├── LiveMetrics.tsx       # Clinical proxy gauges
-│   │   │   ├── MindMapPlot.tsx       # Energy/valence trajectory
-│   │   │   └── VoiceFeed.tsx         # Waveform & voice stats
+│   │   │   ├── AudioVisualizer.tsx    # Animated frequency bars
+│   │   │   ├── ControlPanel.tsx       # Upload & playback controls
+│   │   │   ├── EmotionalAnalysis.tsx  # Unified emotion display
+│   │   │   ├── LiveMetrics.tsx        # Clinical proxy gauges
+│   │   │   └── VoiceFeed.tsx          # Waveform & voice stats
 │   │   ├── context/
-│   │   │   ├── AudioContext.tsx      # Web Audio processing
-│   │   │   ├── HumeContext.tsx       # Hume API state
-│   │   │   └── MetricsContext.tsx    # Aggregated metrics
+│   │   │   ├── AudioContext.tsx       # Web Audio processing
+│   │   │   ├── HumeContext.tsx        # Hume API state
+│   │   │   └── MetricsContext.tsx     # Aggregated metrics
 │   │   ├── utils/
-│   │   │   ├── clinicalMapping.ts    # Clinical proxy calculations
-│   │   │   └── humeParsing.ts        # Hume response parsing
-│   │   └── types/                    # TypeScript definitions
+│   │   │   ├── clinicalMapping.ts     # Clinical proxy calculations
+│   │   │   └── humeParsing.ts         # Hume response parsing
+│   │   └── types/                     # TypeScript definitions
 │   └── ...
 │
 └── server/                     # Express backend
@@ -179,11 +186,27 @@ Visit `http://localhost:5173` and upload an audio file!
 
 ---
 
+## 📊 How Emotion Percentages Work
+
+All emotion scores are **normalized to add up to 100%**, making them easy to interpret:
+
+| Raw Hume Scores | → | Normalized Display |
+|-----------------|---|-------------------|
+| Joy: 0.56       |   | Joy: 28%          |
+| Surprise: 0.36  |   | Surprise: 18%     |
+| Interest: 0.30  |   | Interest: 15%     |
+| ...             |   | ...               |
+| **Total: 2.0+** |   | **Total: 100%**   |
+
+Each percentage represents that emotion's **share of the total emotional expression** detected in the voice.
+
+---
+
 ## 📊 Clinical Proxy Definitions
 
 | Metric | Source Emotions | Description |
 |--------|-----------------|-------------|
-| **Energy** | Arousal, Excitement, Determination | Vocal energy level |
+| **Energy** | Arousal, Excitement, Determination | Vocal energy level (0-100%) |
 | **Depression Risk** | Sadness, Tiredness, Boredom, Disappointment | Low mood indicators |
 | **Anxiety Score** | Anxiety, Fear, Distress, Confusion | Stress signals |
 | **Mania Indicator** | Excitement, Anger, Amusement, Triumph | Elevated mood |
@@ -195,15 +218,15 @@ Visit `http://localhost:5173` and upload an audio file!
 **Frontend**
 - React 19 + TypeScript + Vite
 - Tailwind CSS 4 (glassmorphism design)
-- Recharts (scatter plots)
+- Recharts (charts)
 - WaveSurfer.js (waveforms)
-- Pitchfinder (YIN algorithm)
+- Pitchfinder (YIN pitch detection)
 - Lucide React (icons)
 
 **Backend**
 - Node.js + Express + TypeScript
 - Multer (file uploads)
-- Hume AI API integration
+- Hume AI Expression Measurement API
 
 ---
 
@@ -227,7 +250,7 @@ Analyze audio file for emotions.
 
 **Request:** `multipart/form-data` with `audio` field
 
-**Response:**
+**Success Response:**
 ```json
 {
   "rawScores": {
@@ -236,12 +259,20 @@ Analyze audio file for emotions.
     "Anxiety": 0.34
   },
   "clinical": {
-    "depressionRisk": 0.15,
-    "anxietyScore": 0.22,
-    "maniaScore": 0.31,
-    "energyLevel": 0.48
+    "depressionRisk": 15,
+    "anxietyScore": 22,
+    "maniaScore": 31,
+    "energyLevel": 48
   },
   "processingTimeMs": 2340
+}
+```
+
+**Error Response (no speech detected):**
+```json
+{
+  "error": "No speech detected",
+  "details": "Could not detect clear speech in this audio. Try a recording with clearer voice."
 }
 ```
 
@@ -249,11 +280,12 @@ Analyze audio file for emotions.
 
 ## 🗺️ Roadmap
 
-- [ ] Real-time streaming (WebSocket)
+- [ ] Real-time streaming via WebSocket
 - [ ] Session history & comparisons
-- [ ] Export analysis reports
+- [ ] Export analysis reports (PDF/JSON)
 - [ ] Multi-file batch analysis
 - [ ] Transcript integration
+- [ ] Mobile app version
 
 ---
 
