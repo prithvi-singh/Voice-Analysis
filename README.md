@@ -1,245 +1,282 @@
-# MindMap – Voice Analysis MVP
+# MindMap – Voice Analysis
 
-MindMap is an experimental voice analysis dashboard that combines **local acoustic features** with **Hume Expression Measurement** to surface mental‑health–relevant biomarkers from recorded speech.
+<div align="center">
 
-- **Input**: Uploaded audio file (no live mic in this MVP).
-- **Local analysis**: Volume, pitch, jitter, energy.
-- **Cloud analysis (Hume)**: High‑dimensional emotion scores (e.g. Anxiety, Joy, Tiredness, Awe).
-- **Outputs**:
-  - Emotion spectrum (top Hume emotions + raw scores).
-  - Clinical proxy metrics (Depression risk, Anxiety, Mania, Energy).
+![MindMap Logo](https://via.placeholder.com/120x120/0f172a/34d399?text=🧠)
 
-> ⚠️ This is a **technical prototype**, **not** a medical device and **not** for clinical decision‑making.
+**AI-powered voice emotion and mental health analysis**
 
----
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://typescriptlang.org)
+[![Tailwind](https://img.shields.io/badge/Tailwind-4-38B2AC?logo=tailwindcss)](https://tailwindcss.com)
+[![Hume AI](https://img.shields.io/badge/Hume_AI-Powered-10B981)](https://hume.ai)
 
-## Architecture Overview
-
-The project is split into two apps:
-
-- `mindmap/` – React + Vite frontend (TypeScript, Tailwind, Recharts).
-- `server/` – Node + Express backend (TypeScript) that talks to Hume’s Expression Measurement API.
-
-Data flow:
-
-1. User uploads an audio file in the React app.
-2. Frontend:
-   - Plays audio locally via Web Audio.
-   - Computes volume, pitch, jitter, and energy in real time.
-   - Sends the file to the backend via `POST /analyze`.
-3. Backend:
-   - Uses the Hume API key to start an **Expression Measurement batch job** for the audio.
-   - Polls until predictions are ready.
-   - Collapses Hume’s rich emotion output into a flat `rawScores` map (`{ [emotionName]: score }`).
-   - Returns `rawScores` plus derived clinical proxies back to the frontend.
-4. Frontend:
-   - Stores everything in React context (`AudioProvider`, `HumeProvider`, `MetricsProvider`).
-   - Renders:
-     - **Emotion spectrum**: top emotions + scores as bars.
-     - **Live metrics**: depression risk, anxiety, mania, energy, dominant emotion.
-
-All session data lives in memory only. No database or persistent storage.
+</div>
 
 ---
 
-## Tech Stack
+MindMap is a stunning voice analysis dashboard that combines **local acoustic features** with **Hume AI Expression Measurement** to surface emotion and mental-health–relevant biomarkers from recorded speech.
 
-**Frontend (`mindmap/`):**
+## ✨ Features
 
-- React 18 + Vite + TypeScript
-- Tailwind CSS (v4) + `lucide-react` (icons)
-- `recharts` (for future visualizations)
-- `wavesurfer.js` (waveform container, currently de‑emphasized)
-- `pitchfinder` (local pitch estimation)
+### Core Analysis
+- 🎤 **Voice Upload & Analysis** – Drag-and-drop audio files
+- 🧠 **AI Emotion Detection** – 48+ emotions via Hume AI
+- 📊 **Clinical Proxy Metrics** – Depression, anxiety, mania, energy indicators
+- 🎵 **Voice Quality Metrics** – Pitch, volume, jitter, stability
 
-**Backend (`server/`):**
+### Beautiful Visualizations
+- 🌊 **Real-time Audio Visualizer** – Animated frequency bars
+- 🎭 **Emotion Spectrum** – Top 16 emotions with color-coded progress
+- 📈 **MindMap Trajectory** – Energy vs Valence scatter plot
+- 🔊 **Voice Feed** – Waveform display with live metrics
 
-- Node.js + Express
-- TypeScript + `ts-node-dev`
-- `multer` (file upload)
-- `node-fetch` + `form-data` (calling Hume REST API)
-- Hume Expression Measurement API (batch jobs)
+### Modern Design
+- 🌙 Dark glassmorphism UI with gradient accents
+- ✨ Smooth animations and micro-interactions
+- 📱 Fully responsive layout
+- ♿ Accessibility-friendly focus states
+
+> ⚠️ **Disclaimer**: This is a technical prototype, **not** a medical device. The clinical proxies are experimental and should **not** be used for diagnosis or clinical decision-making.
 
 ---
 
-## Getting Started
+## 🖼️ Preview
 
-### 1. Clone the repo
-
-```bash
-git clone <YOUR_REPO_URL> mindmap-voice-analysis
-cd mindmap-voice-analysis
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  🧠 MindMap Voice Analysis                                      │
+├─────────────────────────────────────────────────────────────────┤
+│  ░░░░░▓▓▓▓▓███████▓▓▓▓░░░░░  (Audio Visualizer)                │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────────────────────────────────┐  │
+│  │ Control     │  │ Emotion Spectrum                        │  │
+│  │ Panel       │  │                                         │  │
+│  │             │  │ Joy ████████░░ 0.72                     │  │
+│  │ ▣ Upload    │  │ Interest █████░░░░ 0.48                 │  │
+│  │ ▷ Start     │  │ Excitement ████░░░░░ 0.41               │  │
+│  └─────────────┘  │ ...                                     │  │
+│  ┌─────────────┐  └─────────────────────────────────────────┘  │
+│  │ Clinical    │  ┌────────────────┐  ┌────────────────────┐  │
+│  │ Proxies     │  │ MindMap Plot   │  │ Voice Feed         │  │
+│  │             │  │                │  │                    │  │
+│  │ Energy 0.45 │  │    • •         │  │  ∿∿∿∿∿∿∿∿∿∿∿      │  │
+│  │ Anxiety 0.22│  │   •   •        │  │  Pitch: 180Hz     │  │
+│  └─────────────┘  └────────────────┘  └────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### 2. Backend setup (`server/`)
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         FRONTEND                                │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    React + Vite                          │   │
+│  │  ┌───────────┐ ┌───────────┐ ┌───────────────────────┐  │   │
+│  │  │ Audio     │ │ Hume      │ │ Metrics               │  │   │
+│  │  │ Context   │ │ Context   │ │ Context               │  │   │
+│  │  └─────┬─────┘ └─────┬─────┘ └───────────┬───────────┘  │   │
+│  │        │             │                   │               │   │
+│  │  ┌─────▼─────────────▼───────────────────▼───────────┐  │   │
+│  │  │              UI Components                         │  │   │
+│  │  │  AudioVisualizer │ ControlPanel │ EmotionCloud    │  │   │
+│  │  │  LiveMetrics │ MindMapPlot │ VoiceFeed            │  │   │
+│  │  └───────────────────────────────────────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │ POST /analyze
+┌───────────────────────────▼─────────────────────────────────────┐
+│                         BACKEND                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                 Express Server                           │   │
+│  │                                                          │   │
+│  │  /health  - Server status                               │   │
+│  │  /analyze - Audio → Hume AI → Emotion scores            │   │
+│  └───────────────────────────┬─────────────────────────────┘   │
+└───────────────────────────────┼─────────────────────────────────┘
+                                │
+┌───────────────────────────────▼─────────────────────────────────┐
+│                        HUME AI                                  │
+│  Expression Measurement API (Prosody Model)                     │
+│  Returns: 48+ emotion scores per audio segment                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- Hume AI API key ([Get one free](https://hume.ai))
+
+### 1. Clone & Install
 
 ```bash
-cd server
+# Install frontend
+cd mindmap
+npm install
+
+# Install backend
+cd ../server
 npm install
 ```
 
-Create `.env` (or copy from `.env.example` if present):
+### 2. Configure
 
-```env
-HUME_API_KEY=HUME_API_KEY_PLACEHOLDER
+```bash
+# server/.env
+HUME_API_KEY=your_hume_api_key_here
 PORT=4003
 ```
 
-- Replace `HUME_API_KEY_PLACEHOLDER` with your real Hume API key from the Hume dashboard.
-- You can change `PORT` if needed; be sure to keep frontend in sync.
-
-Run the backend in dev mode:
+### 3. Run
 
 ```bash
-npm run dev
+# Terminal 1 - Backend
+cd server && npm run dev
+
+# Terminal 2 - Frontend
+cd mindmap && npm run dev
 ```
 
-You should see:
+### 4. Open
 
-```text
-MindMap backend listening on http://localhost:4003
-```
-
-### 3. Frontend setup (`mindmap/`)
-
-In a second terminal:
-
-```bash
-cd mindmap
-npm install
-```
-
-Create `.env` (or copy from `.env.example`):
-
-```env
-VITE_HUME_API_KEY=HUME_API_KEY_PLACEHOLDER
-```
-
-> The frontend key is only used for future pure‑client integrations. The current MVP routes all Hume calls through the backend and will work as long as the backend key is set.
-
-Run the dev server:
-
-```bash
-npm run dev
-```
-
-Visit `http://localhost:5173`.
+Visit `http://localhost:5173` and upload an audio file!
 
 ---
 
-## Using the App
+## 📁 Project Structure
 
-1. Start both servers:
-   - `server/`: `npm run dev`
-   - `mindmap/`: `npm run dev`
-2. Go to `http://localhost:5173`.
-3. In the **Control Panel**:
-   - Click **Choose file** and select a voice recording (WAV/MP3; 15–60 seconds works well).
-   - Verify the file name and duration appear.
-   - Click **Start analysis**.
-4. What you should see:
-   - **Hume status** → `connected`.
-   - After a short delay (Hume batch job time):
-     - **Emotion spectrum** fills with labels like *Anxiety*, *Joy*, *Tiredness*, each with a 0–1 score and a colored bar.
-     - **Live Metrics** shows non‑zero values for:
-       - Energy
-       - Depression risk
-       - Anxiety
-       - Mania
-       - Dominant emotion
-
-If nothing appears:
-
-- Check the browser dev console (network tab) for `POST /analyze` errors.
-- Check the backend terminal for any `Hume ... failed` messages.
-
----
-
-## Environment Variables
-
-### Frontend (`mindmap/.env`)
-
-- `VITE_HUME_API_KEY` – optional, placeholder for future direct Hume usage in the browser.
-
-### Backend (`server/.env`)
-
-- `HUME_API_KEY` – **required**. Your Hume API key.
-- `PORT` – port for the Express server (default `4003`).
-
-> **Security note**: `.env` files are ignored by git. Never commit your real keys.
-
----
-
-## Key Concepts & Clinical Proxies
-
-The frontend maps Hume scores to simple mental‑health–adjacent proxies.
-
-Given Hume emotion scores such as `Sadness`, `Tiredness`, `Boredom`, `Anxiety`, etc.:
-
-- **Depression risk**  
-  \[
-  \text{Depression Risk} = \frac{\text{Sadness} + \text{Tiredness} + \text{Boredom}}{3}
-  \]
-
-- **Anxiety score**  
-  \[
-  \text{Anxiety} = \frac{\text{Anxiety} + \text{Fear} + \text{Distress}}{3}
-  \]
-
-- **Mania score**  
-  \[
-  \text{Mania} = \frac{\text{Excitement} + \text{Anger} + \text{Amusement}}{3}
-  \]
-
-- **Energy level** – blend of local audio energy (volume) and Hume arousal.
-
-These are **heuristic proxies**, not validated clinical instruments.
-
----
-
-## Project Structure
-
-```text
+```
 .
-├── mindmap/                 # React + Vite frontend
+├── mindmap/                    # React frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── ControlPanel.tsx
-│   │   │   ├── LiveMetrics.tsx
-│   │   │   └── EmotionCloud.tsx
+│   │   │   ├── AudioVisualizer.tsx   # Animated frequency bars
+│   │   │   ├── ControlPanel.tsx      # Upload & playback controls
+│   │   │   ├── EmotionCloud.tsx      # Emotion spectrum display
+│   │   │   ├── LiveMetrics.tsx       # Clinical proxy gauges
+│   │   │   ├── MindMapPlot.tsx       # Energy/valence trajectory
+│   │   │   └── VoiceFeed.tsx         # Waveform & voice stats
 │   │   ├── context/
-│   │   │   ├── AudioContext.tsx
-│   │   │   ├── HumeContext.tsx
-│   │   │   └── MetricsContext.tsx
+│   │   │   ├── AudioContext.tsx      # Web Audio processing
+│   │   │   ├── HumeContext.tsx       # Hume API state
+│   │   │   └── MetricsContext.tsx    # Aggregated metrics
 │   │   ├── utils/
-│   │   │   ├── clinicalMapping.ts
-│   │   │   └── humeParsing.ts
-│   │   └── types/
-│   │       ├── audio.ts
-│   │       ├── hume.ts
-│   │       └── session.ts
+│   │   │   ├── clinicalMapping.ts    # Clinical proxy calculations
+│   │   │   └── humeParsing.ts        # Hume response parsing
+│   │   └── types/                    # TypeScript definitions
 │   └── ...
-└── server/                  # Node + Express backend
-    ├── src/
-    │   └── server.ts       # /analyze endpoint, Hume integration
-    └── ...
+│
+└── server/                     # Express backend
+    └── src/
+        └── server.ts           # API with Hume integration
 ```
 
 ---
 
-## Roadmap / Ideas
+## 📊 Clinical Proxy Definitions
 
-- Replace batch polling with **Expression Measurement streaming** for lower latency.
-- Add:
-  - Timeline of emotion trajectories.
-  - Session summaries (e.g., average depression/anxiety over the clip).
-  - Export of raw Hume scores for research.
-- Integrate transcript + language‑based metrics (when available).
+| Metric | Source Emotions | Description |
+|--------|-----------------|-------------|
+| **Energy** | Arousal, Excitement, Determination | Vocal energy level |
+| **Depression Risk** | Sadness, Tiredness, Boredom, Disappointment | Low mood indicators |
+| **Anxiety Score** | Anxiety, Fear, Distress, Confusion | Stress signals |
+| **Mania Indicator** | Excitement, Anger, Amusement, Triumph | Elevated mood |
 
 ---
 
-## Disclaimer
+## 🛠️ Tech Stack
 
-This repository is for **exploration and prototyping only**.  
-It is **not** intended for diagnosis, treatment, or any clinical decision‑making.
+**Frontend**
+- React 19 + TypeScript + Vite
+- Tailwind CSS 4 (glassmorphism design)
+- Recharts (scatter plots)
+- WaveSurfer.js (waveforms)
+- Pitchfinder (YIN algorithm)
+- Lucide React (icons)
 
+**Backend**
+- Node.js + Express + TypeScript
+- Multer (file uploads)
+- Hume AI API integration
+
+---
+
+## 🔗 API Reference
+
+### `GET /health`
+
+Health check endpoint.
+
+```json
+{
+  "status": "ok",
+  "humeConfigured": true,
+  "version": "1.0.0"
+}
+```
+
+### `POST /analyze`
+
+Analyze audio file for emotions.
+
+**Request:** `multipart/form-data` with `audio` field
+
+**Response:**
+```json
+{
+  "rawScores": {
+    "Joy": 0.72,
+    "Sadness": 0.12,
+    "Anxiety": 0.34
+  },
+  "clinical": {
+    "depressionRisk": 0.15,
+    "anxietyScore": 0.22,
+    "maniaScore": 0.31,
+    "energyLevel": 0.48
+  },
+  "processingTimeMs": 2340
+}
+```
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Real-time streaming (WebSocket)
+- [ ] Session history & comparisons
+- [ ] Export analysis reports
+- [ ] Multi-file batch analysis
+- [ ] Transcript integration
+
+---
+
+## ⚠️ Important Disclaimer
+
+This is an **experimental prototype** for exploration purposes only.
+
+- **NOT** a medical device
+- **NOT** for clinical diagnosis
+- **NOT** for treatment decisions
+
+The clinical proxies are heuristic calculations based on emotional expression scores and have **not** been validated against clinical instruments.
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+<div align="center">
+
+Built with ❤️ using [Hume AI](https://hume.ai) • [React](https://react.dev) • [Tailwind CSS](https://tailwindcss.com)
+
+</div>

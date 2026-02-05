@@ -1,73 +1,167 @@
-# React + TypeScript + Vite
+# MindMap - Voice Analysis
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A stunning, real-time voice emotion and mental health analysis application powered by Hume AI.
 
-Currently, two official plugins are available:
+![MindMap Preview](https://via.placeholder.com/800x400/0f172a/34d399?text=MindMap+Voice+Analysis)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+### 🎯 Core Functionality
+- **Voice Upload & Analysis** - Drag-and-drop audio files for instant analysis
+- **Real-time Emotion Detection** - Powered by Hume AI's prosody model
+- **Clinical Proxy Metrics** - Depression, anxiety, mania, and energy indicators
+- **Voice Quality Analysis** - Pitch, volume, jitter, and stability tracking
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 📊 Visualizations
+- **Audio Visualizer** - Beautiful animated waveform that responds to audio
+- **Emotion Spectrum** - Top 16 emotions with animated progress bars
+- **MindMap Trajectory** - Energy vs Valence scatter plot over time
+- **Voice Feed** - Waveform display with real-time voice metrics
 
-## Expanding the ESLint configuration
+### 🎨 Design
+- Modern glassmorphism UI with subtle gradients
+- Dark theme optimized for extended use
+- Smooth animations and micro-interactions
+- Fully responsive layout
+- Accessibility-friendly focus states
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Frontend**: React 19, TypeScript, Vite
+- **Styling**: Tailwind CSS 4, custom glassmorphism
+- **Visualization**: Recharts, WaveSurfer.js, Canvas API
+- **Audio Processing**: Web Audio API, Pitchfinder (YIN algorithm)
+- **AI**: Hume AI Expression Measurement API
+- **Backend**: Express.js, TypeScript
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Quick Start
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+- Node.js 18+
+- A Hume AI API key ([Get one here](https://hume.ai))
+
+### Installation
+
+1. **Clone and install frontend dependencies**
+   ```bash
+   cd mindmap
+   npm install
+   ```
+
+2. **Install server dependencies**
+   ```bash
+   cd ../server
+   npm install
+   ```
+
+3. **Configure environment**
+   ```bash
+   # In server/.env
+   HUME_API_KEY=your_hume_api_key_here
+   PORT=4003
+   ```
+
+4. **Start the development servers**
+   ```bash
+   # Terminal 1 - Backend
+   cd server
+   npm run dev
+
+   # Terminal 2 - Frontend
+   cd mindmap
+   npm run dev
+   ```
+
+5. **Open** `http://localhost:5173` in your browser
+
+## Project Structure
+
+```
+├── mindmap/                # React frontend
+│   ├── src/
+│   │   ├── components/     # UI components
+│   │   │   ├── AudioVisualizer.tsx    # Animated audio bars
+│   │   │   ├── ControlPanel.tsx       # File upload & controls
+│   │   │   ├── EmotionCloud.tsx       # Emotion spectrum display
+│   │   │   ├── LiveMetrics.tsx        # Clinical proxy gauges
+│   │   │   ├── MindMapPlot.tsx        # Trajectory scatter plot
+│   │   │   └── VoiceFeed.tsx          # Waveform & voice stats
+│   │   ├── context/        # React context providers
+│   │   │   ├── AudioContext.tsx       # Audio playback & processing
+│   │   │   ├── HumeContext.tsx        # Hume API state
+│   │   │   └── MetricsContext.tsx     # Aggregated metrics
+│   │   ├── types/          # TypeScript definitions
+│   │   ├── utils/          # Helper functions
+│   │   └── config/         # Configuration
+│   └── ...
+│
+├── server/                 # Express backend
+│   └── src/
+│       └── server.ts       # API server with Hume integration
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## API Endpoints
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | Health check with API status |
+| `POST` | `/analyze` | Upload audio for emotion analysis |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+### POST /analyze
+
+**Request:**
+- `Content-Type: multipart/form-data`
+- `audio`: Audio file (MP3, WAV, M4A, OGG, WebM, FLAC)
+
+**Response:**
+```json
+{
+  "rawScores": {
+    "Joy": 0.234,
+    "Sadness": 0.123,
+    ...
   },
-])
+  "clinical": {
+    "depressionRisk": 0.15,
+    "anxietyScore": 0.22,
+    "maniaScore": 0.18,
+    "energyLevel": 0.45
+  },
+  "processingTimeMs": 2340
+}
 ```
+
+## Clinical Proxy Definitions
+
+| Metric | Source Emotions | Description |
+|--------|-----------------|-------------|
+| **Energy Level** | Arousal, Excitement, Determination | Overall vocal energy |
+| **Depression Risk** | Sadness, Tiredness, Boredom, Disappointment | Low mood indicators |
+| **Anxiety Score** | Anxiety, Fear, Distress, Confusion | Stress and worry signals |
+| **Mania Indicator** | Excitement, Anger, Amusement, Triumph | Elevated mood markers |
+
+> ⚠️ **Disclaimer**: These metrics are experimental proxies derived from emotional expression analysis. They are NOT clinical diagnoses and should not be used for medical purposes.
+
+## Development
+
+```bash
+# Run frontend dev server
+cd mindmap && npm run dev
+
+# Run backend dev server
+cd server && npm run dev
+
+# Build for production
+cd mindmap && npm run build
+
+# Type check
+npm run lint
+```
+
+## License
+
+MIT
+
+---
+
+Built with ❤️ using [Hume AI](https://hume.ai) • [React](https://react.dev) • [Tailwind CSS](https://tailwindcss.com)
