@@ -201,7 +201,7 @@ export function EmotionCloud() {
     : lastScores;
 
   // Process and normalize entries so they sum to 100%
-  const { normalizedEntries, totalRawScore } = useMemo(() => {
+  const { normalizedEntries } = useMemo(() => {
     if (!scores) return { normalizedEntries: [], totalRawScore: 0 };
     
     const raw: Array<{ name: string; score: number }> = [];

@@ -1,11 +1,9 @@
-import { useEffect, useRef, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useAudio } from "../context/AudioContext";
 import { AudioLines, Waves, Mic } from "lucide-react";
 
 export function VoiceFeed() {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const { currentTime, duration, metrics, isPlaying, currentFileName } = useAudio();
-  const [waveSurferError, setWaveSurferError] = useState(false);
 
   // Calculate stability metrics
   const jitter = metrics.jitter ?? 0;

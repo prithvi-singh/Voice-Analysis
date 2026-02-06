@@ -39,7 +39,7 @@ interface MetricsProviderProps {
 
 export function MetricsProvider({ children }: MetricsProviderProps) {
   const { metrics: localMetrics, currentTime, isPlaying } = useAudio();
-  const { lastScores, status } = useHume();
+  const { lastScores } = useHume();
 
   const [sessionData, setSessionData] = useState<SessionDatum[]>([]);
   const [isCollecting, setIsCollecting] = useState(false);

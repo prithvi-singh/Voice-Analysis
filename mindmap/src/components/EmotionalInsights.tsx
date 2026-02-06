@@ -244,8 +244,9 @@ export function EmotionalInsights() {
 
   // Voice quality summary
   const voiceQuality = useMemo(() => {
-    const stability = audioMetrics?.stability ?? 0;
-    const energy = audioMetrics?.energy ?? 0;
+    // Derive stability from jitter (stability = 1 - jitter), then scale to 0-100
+    const jitter = audioMetrics?.jitter ?? 0;
+    const stability = (1 - Math.max(0, Math.min(1, jitter))) * 100;
     
     if (stability > 80) return { label: "Very Stable", trend: "up" as const };
     if (stability > 50) return { label: "Moderate", trend: "stable" as const };

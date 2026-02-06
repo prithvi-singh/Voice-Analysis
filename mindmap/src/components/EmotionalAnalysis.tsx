@@ -9,7 +9,6 @@ import {
   AlertTriangle,
   Zap,
   Lightbulb,
-  TrendingUp,
   Smile,
   Frown,
   Meh,
@@ -152,7 +151,7 @@ function EmotionPie({ emotions }: { emotions: Array<{ name: string; percent: num
 }
 
 export function EmotionalAnalysis() {
-  const { currentPoint, sessionData } = useMetrics();
+  const { currentPoint } = useMetrics();
   const { isExternalLoading, lastScores } = useHume();
   const { metrics: audioMetrics } = useAudio();
   
@@ -260,7 +259,9 @@ export function EmotionalAnalysis() {
   }, [analysis]);
 
   const hasData = analysis !== null;
-  const voiceStability = audioMetrics?.stability ?? 0;
+  // Derive voice stability from jitter (stability = 1 - jitter)
+  const jitter = audioMetrics?.jitter ?? 0;
+  const voiceStability = (1 - Math.max(0, Math.min(1, jitter))) * 100;
 
   return (
     <div className="glass-card rounded-2xl p-5 space-y-4 h-full">
@@ -329,7 +330,7 @@ export function EmotionalAnalysis() {
             <EmotionPie emotions={analysis.all} />
             
             <div className="flex-1 space-y-1.5">
-              {analysis.top8.slice(0, 5).map((e, i) => (
+              {analysis.top8.slice(0, 5).map((e) => (
                 <div key={e.name} className="flex items-center gap-2 text-xs">
                   <span 
                     className="h-2.5 w-2.5 rounded-full flex-shrink-0" 
